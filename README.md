@@ -1,2 +1,2 @@
 # RailSurveil-UI
-RailSurveil's Desktop Application
+Rail Surveil's Desktop Application

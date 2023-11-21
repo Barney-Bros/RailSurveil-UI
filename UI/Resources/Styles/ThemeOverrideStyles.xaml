@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls">
+    <DataTemplate x:Key="MetroWindowIconTemplate">
+        <mah:MultiFrameImage Width="{TemplateBinding Width}"
+                             Height="{TemplateBinding Height}"
+                             Margin="4"
+                             MultiFrameImageMode="{Binding IconScalingMode, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:MetroWindow}}}"
+                             RenderOptions.BitmapScalingMode="{Binding IconBitmapScalingMode, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:MetroWindow}}}"
+                             RenderOptions.EdgeMode="{Binding IconEdgeMode, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:MetroWindow}}}"
+                             Source="{TemplateBinding Content}" />
+    </DataTemplate>
+</ResourceDictionary>
