@@ -7,6 +7,8 @@ public partial class SettingsViewModel : ObservableObject
 {
     #region Fields
 
+    private readonly IAutoUpdateService _autoUpdateService;
+
     private readonly IThemeService _themeService;
 
     [ObservableProperty] private string[] _availableThemes;
@@ -17,11 +19,13 @@ public partial class SettingsViewModel : ObservableObject
 
     #region Constructors
 
-    public SettingsViewModel(IThemeService themeService)
+    public SettingsViewModel(IThemeService themeService, IAutoUpdateService autoUpdateService)
     {
         _themeService = themeService;
+        _autoUpdateService = autoUpdateService;
         _availableThemes = themeService.ThemeNames;
         _currentTheme = themeService.CurrentThemeName;
+        autoUpdateService.UpdateExists();
     }
 
     #endregion

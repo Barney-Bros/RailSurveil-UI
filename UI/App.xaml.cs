@@ -12,8 +12,12 @@ public partial class App
 {
     #region Methods
 
-    protected override void RegisterTypes(IContainerRegistry containerRegistry) =>
+    protected override void RegisterTypes(IContainerRegistry containerRegistry)
+    {
         containerRegistry.RegisterSingleton<IThemeService, ThemeService>();
+        containerRegistry.RegisterSingleton<IAutoUpdateService>(() =>
+            new AutoUpdateService("https://github.com/Barney-Bros/RailSurveil-UI"));
+    }
 
     protected override Window CreateShell() => new Shell();
 
@@ -26,7 +30,13 @@ public partial class App
             onEveryRun: OnAppRun);
     }
 
-    private void OnAppRun(SemanticVersion version, IAppTools tools, bool firstRun) => tools.CreateShortcutForThisExe();
+    private void OnAppRun(SemanticVersion version, IAppTools tools, bool firstRun)
+    {
+        if (firstRun)
+        {
+            tools.CreateShortcutForThisExe();
+        }
+    }
 
     private void OnAppUninstall(SemanticVersion version, IAppTools tools) => tools.RemoveShortcutForThisExe();
 

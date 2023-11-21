@@ -11,6 +11,7 @@ public class SettingsViewModelTests
     #region Fields
 
     private static readonly string[] AvailableThemeNames = { "Light", "Dark" };
+    private IAutoUpdateService _autoUpdateService;
     private IThemeService _themeService;
     private SettingsViewModel _viewModelUnderTest;
 
@@ -22,8 +23,9 @@ public class SettingsViewModelTests
     public void Initialize()
     {
         _themeService = Substitute.For<IThemeService>();
+        _autoUpdateService = Substitute.For<IAutoUpdateService>();
         _themeService.ThemeNames.Returns(AvailableThemeNames);
-        _viewModelUnderTest = new SettingsViewModel(_themeService);
+        _viewModelUnderTest = new SettingsViewModel(_themeService, _autoUpdateService);
     }
 
     [TestMethod]

@@ -7,19 +7,22 @@
                  xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
                  xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                  xmlns:views="clr-namespace:UI.Views"
+                 xmlns:viewModels="clr-namespace:UI.ViewModels"
                  mc:Ignorable="d"
                  TitleCharacterCasing="Normal"
                  Height="450"
                  Width="800"
                  ShowIconOnTitleBar="False"
-                 Icon="/UI;component/Resources/Images/RailSurveilIcon.ico"
+                 Icon="/Rail Surveil;component/Resources/Images/RailSurveilIcon.ico"
                  mvvm:ViewModelLocator.AutoWireViewModel="True"
-                 Style="{StaticResource MahApps.Styles.MetroWindow.Clean}">
+                 WindowStartupLocation="CenterScreen"
+                 Style="{StaticResource MahApps.Styles.MetroWindow.Clean}"
+                 d:DataContext="{d:DesignInstance viewModels:ShellViewModel}">
     <mah:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/UI;component/Resources/Styles/ThemeOverrideStyles.xaml" />
-                <ResourceDictionary Source="/UI;component/Resources/Styles/HamburgerMenuStyles.xaml" />
+                <ResourceDictionary Source="/Rail Surveil;component/Resources/Styles/ThemeOverrideStyles.xaml" />
+                <ResourceDictionary Source="/Rail Surveil;component/Resources/Styles/HamburgerMenuStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </mah:MetroWindow.Resources>
@@ -27,7 +30,12 @@
         <mah:StaticResource ResourceKey="MetroWindowIconTemplate" />
     </mah:MetroWindow.IconTemplate>
     <Grid>
-        <mah:HamburgerMenu x:Name="HamburgerMenuControl"
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <mah:HamburgerMenu Grid.Row="0"
+                           x:Name="HamburgerMenuControl"
                            HamburgerWidth="48"
                            IsPaneOpen="False"
                            HamburgerMargin="0,-32,0,0"
@@ -59,12 +67,19 @@
                 <DataTemplate DataType="{x:Type mah:HamburgerMenuIconItem}">
                     <ScrollViewer Focusable="False"
                                   HorizontalScrollBarVisibility="Disabled"
-                                  VerticalScrollBarVisibility="Auto" Opacity=".75">
+                                  VerticalScrollBarVisibility="Auto"
+                                  Opacity=".75">
                         <ContentControl Content="{Binding Tag}"
-                                        Focusable="False" Margin="4" />
+                                        Focusable="False"
+                                        Margin="4" />
                     </ScrollViewer>
                 </DataTemplate>
             </mah:HamburgerMenu.ContentTemplate>
         </mah:HamburgerMenu>
+        <StatusBar Grid.Row="1"
+                   Padding="4,0">
+            <StatusBarItem Content="{Binding AppVersion}"
+                           HorizontalAlignment="Right" />
+        </StatusBar>
     </Grid>
 </mah:MetroWindow>
