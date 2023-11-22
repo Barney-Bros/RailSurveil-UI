@@ -4,6 +4,7 @@ using Prism.Ioc;
 using Squirrel;
 using UI.Infrastructure;
 using UI.Views;
+using Settings = UI.Properties.Settings;
 
 namespace UI;
 
@@ -17,6 +18,8 @@ public partial class App
         containerRegistry.RegisterSingleton<IThemeService, ThemeService>();
         containerRegistry.RegisterSingleton<IAutoUpdateService>(() =>
             new AutoUpdateService("https://github.com/Barney-Bros/RailSurveil-UI"));
+        containerRegistry.RegisterSingleton<IApplicationSettingsService>(() =>
+            new ApplicationSettingsService(Settings.Default));
     }
 
     protected override Window CreateShell() => new Shell();

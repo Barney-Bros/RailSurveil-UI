@@ -39,6 +39,11 @@ public class AutoUpdateService : IAutoUpdateService
     public async Task UpdateLatestAndRestart(IProgress<int> progressReport = null)
     {
         using var updateManager = new UpdateManager(new GithubSource(_updateSourcePath, string.Empty, true));
+        if (!updateManager.IsInstalledApp)
+        {
+            return;
+        }
+
         var update = await updateManager.UpdateApp(x => progressReport?.Report(x));
         if (update is not null)
         {
