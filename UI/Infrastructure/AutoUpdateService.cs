@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Serilog;
 using Squirrel;
 using Squirrel.Sources;
 
@@ -24,17 +26,21 @@ public class AutoUpdateService : IAutoUpdateService
 
     #region Methods
 
-    public async Task<bool> UpdateExists(IProgress<int> progressReport = null)
-    {
-        using var updateManager = new UpdateManager(new GithubSource(_updateSourcePath, string.Empty, true));
-        if (!updateManager.IsInstalledApp)
+    public async Task<bool> UpdateExists(IProgress<int> progressReport = null) =>
+        await Task.Run(async () =>
         {
-            return false;
-        }
-
-        var update = await updateManager.CheckForUpdate(progress: x => progressReport?.Report(x));
-        return update is not null;
-    }
+            try
+            {
+                using var updateManager = new UpdateManager(new GithubSource(_updateSourcePath, string.Empty, true));
+                var update = await updateManager.CheckForUpdate(progress: x => progressReport?.Report(x));
+                return update?.ReleasesToApply?.Any() == true;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Failed UpdateExists");
+                return false;
+            }
+        });
 
     public async Task UpdateLatestAndRestart(IProgress<int> progressReport = null)
     {

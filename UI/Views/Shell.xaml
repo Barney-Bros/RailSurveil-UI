@@ -9,6 +9,8 @@
                  xmlns:views="clr-namespace:UI.Views"
                  xmlns:viewModels="clr-namespace:UI.ViewModels"
                  xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                 xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+                 xmlns:converters="clr-namespace:UI.Converters"
                  mc:Ignorable="d"
                  TitleCharacterCasing="Normal"
                  Height="450"
@@ -27,9 +29,23 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </mah:MetroWindow.Resources>
+    <mah:MetroWindow.RightWindowCommands>
+        <mah:WindowCommands>
+            <Button Foreground="Chartreuse"
+                    ToolTip="Update Available!"
+                    Content="{iconPacks:Material Kind=ProgressDownload}"
+                    Command="{Binding PerformUpdateCommand}"
+                    Visibility="{Binding UpdateExists, Converter={converters:BooleanToVisibilityConverter}}" />
+        </mah:WindowCommands>
+    </mah:MetroWindow.RightWindowCommands>
     <mah:MetroWindow.IconTemplate>
         <mah:StaticResource ResourceKey="MetroWindowIconTemplate" />
     </mah:MetroWindow.IconTemplate>
+    <b:Interaction.Triggers>
+        <b:EventTrigger EventName="Loaded">
+            <mvvm:InvokeCommandAction Command="{Binding InitializeCommand}" />
+        </b:EventTrigger>
+    </b:Interaction.Triggers>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
@@ -76,7 +92,7 @@
                                                     </Setter.Value>
                                                 </Setter>
                                                 <Setter Property="ToolTip"
-                                                        Value="Update Available!"/>
+                                                        Value="Update Available!" />
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>

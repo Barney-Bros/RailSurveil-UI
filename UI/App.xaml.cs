@@ -33,6 +33,7 @@ public partial class App
         InitializeLogger();
         AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
         base.OnStartup(e);
+
         SquirrelAwareApp.HandleEvents(
             OnAppInstall,
             onAppUninstall: OnAppUninstall,
@@ -42,7 +43,7 @@ public partial class App
     private void InitializeLogger()
     {
         using var log = new LoggerConfiguration()
-            .WriteTo.File("RailSurveil.log", rollOnFileSizeLimit: true, retainedFileTimeLimit: TimeSpan.FromDays(2))
+            .WriteTo.File("RailSurveil.txt", rollOnFileSizeLimit: true, retainedFileTimeLimit: TimeSpan.FromDays(2))
             .CreateLogger();
     }
 
@@ -51,9 +52,18 @@ public partial class App
 
     private void OnAppRun(SemanticVersion version, IAppTools tools, bool firstRun)
     {
-        if (firstRun)
+        try
         {
-            tools.CreateShortcutForThisExe();
+            Log.Information("OnAppRun!");
+            if (firstRun)
+            {
+                tools.CreateShortcutForThisExe();
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
         }
     }
 
